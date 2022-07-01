@@ -115,7 +115,7 @@ ${PR_GREY}]${PR_HBAR}${PR_URCORNER}\
 
 ${PR_GREY}${PR_LLCORNER}${PR_HBAR}[\
 ${PR_GREEN}%${PR_PWDLEN}<...<%~%<<\
-${PR_GREY}${PR_HBAR}${PR_HBAR}\
+${PR_GREY} ${PR_HBAR}${PR_HBAR}\
 ${PR_NO_COLOUR} ${PR_CYAN}::\
 ${PR_NO_COLOUR} '
 
@@ -124,7 +124,7 @@ return_code="%(?..%{$fg[red]%}%? ↵ %{$reset_color%})"
 RPROMPT=' $return_code\
 ${PR_GREY}:\
 ${PR_LIGHT_BLUE}%{$reset_color%}$(git_prompt_info)$(git_prompt_status)\
-${PR_GREY} : %l]${PR_HBAR}${PR_LRCORNER}\
+${PR_GREY} %l]${PR_HBAR}${PR_LRCORNER}\
 ${PR_NO_COLOUR}'
 
 PS2='${PR_GREY}${PR_HBAR}\
