@@ -4,17 +4,20 @@ function theme_precmd {
   PR_FILLBAR=""
   PR_PWDLEN=""
 
-  local promptsize=${#${(%):---(%n@%m:%l)---()--}}
+  local promptsize=${#${(%):---[%D{%a','%b%d' '%H:%M}]--[%n@%m]---}}
   local rubypromptsize=${#${(%)$(ruby_prompt_info)}}
   local pwdsize=${#${(%):-%~}}
 
   # Truncate the path if it's too long.
-  if (( promptsize + rubypromptsize + pwdsize > TERMWIDTH )); then
-    (( PR_PWDLEN = TERMWIDTH - promptsize ))
-  elif [[ "${langinfo[CODESET]}" = UTF-8 ]]; then
-    PR_FILLBAR="\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize + pwdsize) ))::${PR_HBAR}:)}"
+  if (( pwdsize > TERMWIDTH - 60 )); then
+    (( PR_PWDLEN = TERMWIDTH - 60 ))
+  fi
+
+  # Prompt first line length
+  if [[ "${langinfo[CODESET]}" = UTF-8 ]]; then
+    PR_FILLBAR="\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize) ))::${PR_HBAR}:)}"
   else
-    PR_FILLBAR="${PR_SHIFT_IN}\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize + pwdsize) ))::${altchar[q]:--}:)}${PR_SHIFT_OUT}"
+    PR_FILLBAR="${PR_SHIFT_IN}\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize) ))::${altchar[q]:--}:)}${PR_SHIFT_OUT}"
   fi
 }
 
@@ -101,24 +104,30 @@ fi
 
 # Finally, the prompt.
 PROMPT='${PR_SET_CHARSET}${PR_STITLE}${(e)PR_TITLEBAR}\
-${PR_CYAN}${PR_ULCORNER}${PR_HBAR}${PR_GREY}(\
-${PR_GREEN}%${PR_PWDLEN}<...<%~%<<\
-${PR_GREY})$(ruby_prompt_info)${PR_CYAN}${PR_HBAR}${PR_HBAR}${(e)PR_FILLBAR}${PR_HBAR}${PR_GREY}(\
-${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%m:%l\
-${PR_GREY})${PR_CYAN}${PR_HBAR}${PR_URCORNER}\
+${PR_GREY}${PR_ULCORNER}\
+${PR_BLUE}${PR_HBAR}[\
+${PR_YELLOW}%D{%a,%b%d %H:%M}\
+${PR_BLUE}]${PR_HBAR}\
+${PR_GREY}$(ruby_prompt_info)\
+${PR_GREY}${(e)PR_FILLBAR}\
+${PR_GREY}${PR_HBAR}[\
+${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%m\
+${PR_GREY}]${PR_HBAR}\
+${PR_GREY}${PR_HBAR}${PR_URCORNER}\
 
-${PR_CYAN}${PR_LLCORNER}${PR_BLUE}${PR_HBAR}(\
-${PR_YELLOW}%D{%H:%M:%S}\
-${PR_LIGHT_BLUE}%{$reset_color%}$(git_prompt_info)$(git_prompt_status)${PR_BLUE})${PR_CYAN}${PR_HBAR}\
-${PR_HBAR}\
->${PR_NO_COLOUR} '
+${PR_GREY}${PR_LLCORNER}\
+${PR_BLUE}${PR_HBAR}|\
+${PR_GREEN}%${PR_PWDLEN}<...<%~%<<\
+${PR_LIGHT_BLUE}%{$reset_color%}$(git_prompt_info)$(git_prompt_status)\
+${PR_GREY}${PR_HBAR}${PR_HBAR}\
+${PR_CYAN}${PR_HBAR} -:\
+${PR_NO_COLOUR} '
 
 # display exitcode on the right when > 0
 return_code="%(?..%{$fg[red]%}%? ↵ %{$reset_color%})"
-RPROMPT=' $return_code${PR_CYAN}${PR_HBAR}${PR_BLUE}${PR_HBAR}\
-(${PR_YELLOW}%D{%a,%b%d}${PR_BLUE})${PR_HBAR}${PR_CYAN}${PR_LRCORNER}${PR_NO_COLOUR}'
+RPROMPT=' $return_code${PR_GREY}${PR_HBAR}${PR_HBAR}:%l${PR_HBAR}${PR_LRCORNER}${PR_NO_COLOUR}'
 
-PS2='${PR_CYAN}${PR_HBAR}\
-${PR_BLUE}${PR_HBAR}(\
-${PR_LIGHT_GREEN}%_${PR_BLUE})${PR_HBAR}\
-${PR_CYAN}${PR_HBAR}${PR_NO_COLOUR} '
+PS2='${PR_GREY}${PR_HBAR}\
+${PR_BLUE}${PR_HBAR}[\
+${PR_LIGHT_GREEN}%_${PR_BLUE}]${PR_HBAR}\
+${PR_GREY}${PR_HBAR}${PR_NO_COLOUR} '
