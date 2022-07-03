@@ -48,7 +48,7 @@ done
 PR_NO_COLOUR="%{$terminfo[sgr0]%}"
 
 # Modify Git prompt
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$terminfo[bold]$fg[cyan]%}"
+ZSH_THEME_GIT_PROMPT_PREFIX=" : %{$terminfo[bold]$fg[cyan]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY=""
 ZSH_THEME_GIT_PROMPT_CLEAN=""
@@ -122,7 +122,7 @@ ${PR_NO_COLOUR} '
 # display exitcode on the right when > 0
 return_code="%(?..%{$fg[red]%}%? ↵ %{$reset_color%})"
 RPROMPT=' $return_code\
-${PR_GREY} :%{$reset_color%}$(git_prompt_info)$(git_prompt_status)\
+${PR_GREY}$(git_prompt_info)$(git_prompt_status)\
 ${PR_GREY} :%l\
 ${PR_GREY}]${PR_HBAR}${PR_LRCORNER}\
 ${PR_NO_COLOUR}'
