@@ -114,7 +114,7 @@ ${PR_GREY}]${PR_HBAR}${PR_URCORNER}\
 ${PR_GREY}${PR_LLCORNER}${PR_HBAR}[\
 ${PR_GREEN}%${PR_PWDLEN}<...<%~%<<\
 ${PR_GREY} ${PR_HBAR}${PR_HBAR}\
-${PR_NO_COLOUR} ${PR_CYAN}::\
+${PR_NO_COLOUR} ${PR_MAGENTA}:${PR_RED}:${PR_YELLOW}:${PR_GREEN}:${PR_CYAN}:${PR_BLUE}:\
 ${PR_NO_COLOUR} '
 
 # display exitcode on the right when > 0
