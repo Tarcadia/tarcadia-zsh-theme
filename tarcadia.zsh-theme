@@ -5,7 +5,6 @@ function theme_precmd {
   PR_PWDLEN=""
 
   local promptsize=${#${(%):---[%D{%a','%b%d' '%H:%M}]--[%n@%m]--}}
-  local rubypromptsize=${#${(%)$(ruby_prompt_info)}}
   local pwdsize=${#${(%):-%~}}
 
   # Truncate the path if it's too long.
@@ -15,9 +14,9 @@ function theme_precmd {
 
   # Prompt first line length
   if [[ "${langinfo[CODESET]}" = UTF-8 ]]; then
-    PR_FILLBAR="\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize) ))::${PR_HBAR}:)}"
+    PR_FILLBAR="\${(l:$(( TERMWIDTH - promptsize ))::${PR_HBAR}:)}"
   else
-    PR_FILLBAR="${PR_SHIFT_IN}\${(l:$(( TERMWIDTH - (promptsize + rubypromptsize) ))::${altchar[q]:--}:)}${PR_SHIFT_OUT}"
+    PR_FILLBAR="${PR_SHIFT_IN}\${(l:$(( TERMWIDTH - promptsize ))::${altchar[q]:--}:)}${PR_SHIFT_OUT}"
   fi
 }
 
@@ -107,7 +106,6 @@ PROMPT='${PR_SET_CHARSET}${PR_STITLE}${(e)PR_TITLEBAR}\
 ${PR_GREY}${PR_ULCORNER}${PR_HBAR}[\
 ${PR_YELLOW}%D{%a,%b%d %H:%M}\
 ${PR_GREY}]${PR_HBAR}\
-${PR_GREY}$(ruby_prompt_info)\
 ${PR_GREY}${(e)PR_FILLBAR}\
 ${PR_GREY}${PR_HBAR}[\
 ${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%m\
